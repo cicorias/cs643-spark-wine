@@ -3,12 +3,28 @@
  */
 package cs643.spark.wine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class App {
+    private static Logger logger = LoggerFactory.getLogger(App.class);
+
+
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        
+        var workingDir = System.getProperty("user.dir");
+        var model1 = new LRModel();
+        model1.setTrainingData("work/data/TrainingDataset.csv");
+        model1.setValidationData("work/data/ValidationDataset.csv");
+
+
+        model1.evaluate();
+
+
+
     }
 }

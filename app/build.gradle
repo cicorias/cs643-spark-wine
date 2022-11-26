@@ -24,13 +24,13 @@ dependencies {
 //    compileOnly 'org.apache.spark:spark-sql_2.13:3.3.1'
 
     // https://mvnrepository.com/artifact/org.apache.spark/spark-sql
-    compileOnly 'org.apache.spark:spark-sql_2.13:3.3.0'
+    implementation 'org.apache.spark:spark-sql_2.13:3.3.0'
 
     // // https://mvnrepository.com/artifact/org.apache.spark/spark-mllib
     // implementation 'org.apache.spark:spark-mllib_2.13:3.3.1'
 
-// https://mvnrepository.com/artifact/org.apache.spark/spark-mllib
-compileOnly 'org.apache.spark:spark-mllib_2.13:3.3.0'
+    // https://mvnrepository.com/artifact/org.apache.spark/spark-mllib
+    implementation 'org.apache.spark:spark-mllib_2.13:3.3.0'
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson/jackson-bom
     implementation 'com.fasterxml.jackson:jackson-bom:2.13.4.20221013'
