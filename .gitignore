@@ -11,3 +11,5 @@ bin/
 
 model/
 model/traindedModel/metadata/.part-00000.crc
+
+data/output*
