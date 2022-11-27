@@ -1,6 +1,5 @@
 package cs643.spark.wine;
 
-import org.apache.spark.SparkFiles;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.classification.LogisticRegression;
@@ -14,7 +13,6 @@ import org.apache.spark.ml.tuning.ParamGridBuilder;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.storage.StorageLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,20 +20,27 @@ public class LRClassifier {
     static Logger logger = LoggerFactory.getLogger(LRClassifier.class);
     
     Pipeline pipeline;
+    CrossValidatorModel cvModel;
     
     public Pipeline getPipeline() {
         return pipeline;
     }
 
+    public CrossValidatorModel getCvModel() {
+        return cvModel;
+    }
+
     SparkSession spark;
     Dataset<Row> trainingDf;
     Dataset<Row> validationDf;
+    String s3Bucket;
 
     public LRClassifier() {
-        this(null, null);
+        this(null, null, null);
     }
 
-    public LRClassifier(String master, String appName) {
+    public LRClassifier(String master, String appName, String s3bucket) {
+        this.s3Bucket = s3bucket;
         if (master == null)
             master = "local[*]";
 
@@ -46,21 +51,25 @@ public class LRClassifier {
                 .appName(appName)
                 .master(master)
                 .getOrCreate();
-
         
     }
 
     public void setTrainingData(String trainDataPath) {
-        // var rr = SparkFiles.get(trainDataPath);
-        var foo = "s3a://test-bucket-njit/TrainingDataset.csv";
-        trainingDf = FileHandler.getDataFrame(spark, foo);
-        trainingDf.persist(StorageLevel.MEMORY_AND_DISK());
+        // var foo = "s3a://test-bucket-njit/TrainingDataset.csv";
+        if (null != this.s3Bucket) {
+            trainDataPath = "s3a://" + this.s3Bucket + "/" + trainDataPath;
+        }
+        trainingDf = FileHandler.getDataFrame(spark, trainDataPath);
+        // trainingDf.persist(StorageLevel.MEMORY_AND_DISK());
     }
 
     public void setValidationData(String validationDataPath) {
         // var rr = SparkFiles.get(validationDataPath);
+        if (null != this.s3Bucket) {
+            validationDataPath = "s3a://" + this.s3Bucket + "/" + validationDataPath;
+        }
         validationDf = FileHandler.getDataFrame(spark, validationDataPath);
-        validationDf.persist(StorageLevel.MEMORY_AND_DISK());
+        // validationDf.persist(StorageLevel.MEMORY_AND_DISK());
     }
 
     public ClassifierResult evaluate() {
@@ -88,7 +97,7 @@ public class LRClassifier {
                 .setEstimatorParamMaps(paramGrid)
                 .setNumFolds(3);
 
-        CrossValidatorModel cvModel = cv.fit(trainingDf);
+        this.cvModel = cv.fit(trainingDf);
 
         Dataset<Row> predictions = cvModel.transform(validationDf);
 

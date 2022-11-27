@@ -28,7 +28,6 @@ public class FileHandler {
         "alcohol",
         "label"};
 
-    // TODO: does this need to be in reverse order.
     static String[] features = Arrays.asList(columns).subList(0, columns.length - 1).toArray(new String[0]);
 
     public static Dataset<Row> getDataFrame(SparkSession spark, String name) {
@@ -40,6 +39,7 @@ public class FileHandler {
                 .option("sep", ";")
                 .schema(schema)
                 .load(name);
+
 
         logger.info("Setting up features");
         Dataset<Row> lblFeatureDf = data.select("label", features);

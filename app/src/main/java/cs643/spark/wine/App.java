@@ -5,41 +5,96 @@ package cs643.spark.wine;
 
 import java.io.IOException;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class App {
     private static Logger logger = LoggerFactory.getLogger(App.class);
 
-    public static void main(String[] args) {
+    @Parameter(names = {"--processor", "-p"},required = true, validateWith = Arguments.class, description = "must be either 'training' or 'prediction'")
+    private String processor;
 
-        String trainDataPath = args[0];
-        String validationDataPath = args[1];
-        String sparkMaster = args[2];
+    @Parameter(names = {"--s3bucket", "-b"}, description = "S3 bucket name")
+    private String bucket;
+
+    @Parameter(names = {"--master", "-m"}, description = "Spark master URL - default is local[*]")
+    private String master = "local[*]";
+
+    @Parameter(names = {"--test", "-t"}, description = "Test file name")
+    private String testFile;
+
+    @Parameter(names = "--help", help = true)
+    private boolean help;
+
+    public static void main(String ... argv) {
+
+        try {
+            App main = new App();
+            JCommander.newBuilder()
+                .addObject(main)
+                .build()
+                .parse(argv);
+            main.run();
+        } catch (ParameterException e) {
+            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
+            e.usage();
+            System.exit(1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
+            System.exit(2);
+        }
+
+        logger.info("exiting run....");
+
+
+        // String trainDataPath = args[0];
+        // String validationDataPath = args[1];
+        // String sparkMaster = args[2];
         
-        var workingDir = System.getProperty("user.dir");
-        logger.info("Working directory: {}", workingDir);
-        var model1 = new LRClassifier(sparkMaster, null);
-        model1.setTrainingData(trainDataPath);
-        model1.setValidationData(validationDataPath);
-        ClassifierResult result1 = model1.evaluate();
+    }
 
+    private void run() throws InterruptedException {
+        logger.info("Running with processor: {}", processor);
 
-        // var model2 = new RFClassifier(sparkMaster, null);
-        // model2.setTrainingData(trainDataPath);
-        // model2.setValidationData(validationDataPath);
-        // ClassifierResult result2 = model2.evaluate();
+        if (processor.equalsIgnoreCase("training")) {
+            var workingDir = System.getProperty("user.dir");
+            logger.info("Working directory: {}", workingDir);
+            var model1 = new LRClassifier(master, null, bucket);
+            model1.setTrainingData("TrainingDataset.csv");
+            model1.setValidationData("ValidationDataset.csv");
+            ClassifierResult result1 = model1.evaluate();
+    
+    
+            var model2 = new RFClassifier(master, null, bucket);
+            model2.setTrainingData("TrainingDataset.csv");
+            model2.setValidationData("ValidationDataset.csv");
+            ClassifierResult result2 = model2.evaluate();
+    
+            System.out.println("Logistic Regression");
+            System.out.println(result1.toString());
+            System.out.println("Random Forest");
+            System.out.println(result2.toString());
+    
+            try {
+                model1.pipeline.write().overwrite().save("./model/traindedModel");
+                model1.cvModel.write().overwrite().save("./model/cvModel");
+            } catch (IOException e) {
+                logger.error("Could NOT save the model to path ./models/", e);
+            }
 
-        // System.out.println("Logistic Regression");
-        // System.out.println(result1.toString());
-        // System.out.println("Random Forest");
-        // System.out.println(result2.toString());
+        } else {
+            logger.info("Prediction not implemented yet");
+            var p = new Predict(master, null, testFile);
 
-        // try {
-        //     model1.pipeline.write().overwrite().save("./model/traindedModel");
-        // } catch (IOException e) {
-        //     logger.error("Could NOT save the model to path ./models/", e);
-        // }
+            p.Run();
+            
+        }
 
+        logger.info("completed run of {}", processor);
     }
 }
