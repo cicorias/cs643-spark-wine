@@ -14,6 +14,7 @@ import org.apache.spark.ml.tuning.ParamGridBuilder;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.apache.spark.storage.StorageLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,11 +53,13 @@ public class LRClassifier {
     public void setTrainingData(String trainDataPath) {
         var rr = SparkFiles.get(trainDataPath);
         trainingDf = FileHandler.getDataFrame(spark, rr);
+        trainingDf.persist(StorageLevel.MEMORY_AND_DISK());
     }
 
     public void setValidationData(String validationDataPath) {
         var rr = SparkFiles.get(validationDataPath);
         validationDf = FileHandler.getDataFrame(spark, rr);
+        validationDf.persist(StorageLevel.MEMORY_AND_DISK());
     }
 
     public ClassifierResult evaluate() {
