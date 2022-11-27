@@ -15,16 +15,17 @@ public class App {
 
         String trainDataPath = args[0];
         String validationDataPath = args[1];
+        String sparkMaster = args[2];
         
         var workingDir = System.getProperty("user.dir");
         logger.info("Working directory: {}", workingDir);
-        var model1 = new LRClassifier();
+        var model1 = new LRClassifier(sparkMaster, null);
         model1.setTrainingData(trainDataPath);
         model1.setValidationData(validationDataPath);
         ClassifierResult result1 = model1.evaluate();
 
 
-        var model2 = new RFClassifier();
+        var model2 = new RFClassifier(sparkMaster, null);
         model2.setTrainingData(trainDataPath);
         model2.setValidationData(validationDataPath);
         ClassifierResult result2 = model2.evaluate();
