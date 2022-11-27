@@ -25,21 +25,21 @@ public class App {
         ClassifierResult result1 = model1.evaluate();
 
 
-        var model2 = new RFClassifier(sparkMaster, null);
-        model2.setTrainingData(trainDataPath);
-        model2.setValidationData(validationDataPath);
-        ClassifierResult result2 = model2.evaluate();
+        // var model2 = new RFClassifier(sparkMaster, null);
+        // model2.setTrainingData(trainDataPath);
+        // model2.setValidationData(validationDataPath);
+        // ClassifierResult result2 = model2.evaluate();
 
-        System.out.println("Logistic Regression");
-        System.out.println(result1.toString());
-        System.out.println("Random Forest");
-        System.out.println(result2.toString());
+        // System.out.println("Logistic Regression");
+        // System.out.println(result1.toString());
+        // System.out.println("Random Forest");
+        // System.out.println(result2.toString());
 
-        try {
-            model1.pipeline.write().overwrite().save("./model/traindedModel");
-        } catch (IOException e) {
-            logger.error("Could NOT save the model to path ./models/", e);
-        }
+        // try {
+        //     model1.pipeline.write().overwrite().save("./model/traindedModel");
+        // } catch (IOException e) {
+        //     logger.error("Could NOT save the model to path ./models/", e);
+        // }
 
     }
 }
