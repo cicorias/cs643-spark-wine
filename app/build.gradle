@@ -9,11 +9,17 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+
+    // id 'com.github.johnrengelman.shadow' version '7.1.2'
+    // https://mvnrepository.com/artifact/com.github.johnrengelman.shadow/com.github.johnrengelman.shadow.gradle.plugin
+    //implementation 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:7.1.2'
+
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    // gradlePluginPortal()
 }
 
 dependencies {
@@ -41,12 +47,41 @@ dependencies {
     implementation 'org.apache.spark:spark-core_2.13:3.3.0'
 
 
+    // https://mvnrepository.com/artifact/com.beust/jcommander
+    implementation 'com.beust:jcommander:1.82'
+
+
+    implementation 'org.apache.hadoop:hadoop-common:3.3.0'
+    implementation 'org.apache.hadoop:hadoop-client:3.3.0'
+    implementation 'org.apache.hadoop:hadoop-aws:3.3.0'
+
+    // implementation 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
+
+    implementation 'org.slf4j:slf4j-parent:1.7.33'
+
 }
 
 application {
     // Define the main class for the application.
     mainClass = 'cs643.spark.wine.App'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'cs643.spark.wine.App'
+        //attributes 'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(" ")
+        // attributes 'Class-Path': configurations.runtimeClasspath.files.collect { jarDir+"/$it.name" }.join(' ')
+        //attributes "Class-Path":  configurations.implementation.collect { it.name }.join(' ')
+                
+                //'Class-Path': '/app/build/libs/jcommander-1.82.jar:/app/build/libs/slf4j-api-1.7.33.jar'
+        
+    }
+    dependsOn ('dependencies')
+}
+
+// shadowJar {
+//   zip64 true
+// }
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
