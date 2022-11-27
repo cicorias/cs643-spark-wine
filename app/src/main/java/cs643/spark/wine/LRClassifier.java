@@ -40,6 +40,7 @@ public class LRClassifier {
         if (appName == null)
             appName = "LRModel";
 
+
         this.spark = SparkSession.builder()
                 .appName(appName)
                 .master(master)

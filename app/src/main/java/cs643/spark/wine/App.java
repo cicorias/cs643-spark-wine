@@ -12,18 +12,21 @@ public class App {
     private static Logger logger = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
+
+        String trainDataPath = args[0];
+        String validationDataPath = args[1];
         
         var workingDir = System.getProperty("user.dir");
         logger.info("Working directory: {}", workingDir);
         var model1 = new LRClassifier();
-        model1.setTrainingData("TrainingDataset.csv");
-        model1.setValidationData("ValidationDataset.csv");
+        model1.setTrainingData(trainDataPath);
+        model1.setValidationData(validationDataPath);
         ClassifierResult result1 = model1.evaluate();
 
 
         var model2 = new RFClassifier();
-        model2.setTrainingData("TrainingDataset.csv");
-        model2.setValidationData("ValidationDataset.csv");
+        model2.setTrainingData(trainDataPath);
+        model2.setValidationData(validationDataPath);
         ClassifierResult result2 = model2.evaluate();
 
         System.out.println("Logistic Regression");
