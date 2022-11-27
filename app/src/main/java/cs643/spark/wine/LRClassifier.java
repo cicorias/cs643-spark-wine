@@ -1,5 +1,6 @@
 package cs643.spark.wine;
 
+import org.apache.spark.SparkFiles;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.classification.LogisticRegression;
@@ -40,19 +41,22 @@ public class LRClassifier {
         if (appName == null)
             appName = "LRModel";
 
-
         this.spark = SparkSession.builder()
                 .appName(appName)
                 .master(master)
                 .getOrCreate();
+
+        
     }
 
     public void setTrainingData(String trainDataPath) {
-        trainingDf = FileHandler.getDataFrame(spark, trainDataPath);
+        var rr = SparkFiles.get(trainDataPath);
+        trainingDf = FileHandler.getDataFrame(spark, rr);
     }
 
     public void setValidationData(String validationDataPath) {
-        validationDf = FileHandler.getDataFrame(spark, validationDataPath);
+        var rr = SparkFiles.get(validationDataPath);
+        validationDf = FileHandler.getDataFrame(spark, rr);
     }
 
     public ClassifierResult evaluate() {

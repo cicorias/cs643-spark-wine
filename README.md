@@ -61,7 +61,7 @@ ip-172-31-85-145.ec2.internal
     --master spark://ip-172-31-92-10.ec2.internal:7077 \
     --class cs643.spark.wine.App \
     --files /home/ubuntu/g/cs643-spark-wine/TrainingDataset.csv,/home/ubuntu/g/cs643-spark-wine/ValidationDataset.csv \
-    /home/ubuntu/g/cs643-spark-wine/app/build/libs/app.jar
+    /home/ubuntu/g/cs643-spark-wine/app/build/libs/app.jar TrainingDataset.csv ValidationDataset.csv "spark://ip-172-31-92-10.ec2.internal:7077"
 
 
 
