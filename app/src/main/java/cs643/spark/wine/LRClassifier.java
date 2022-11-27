@@ -52,7 +52,7 @@ public class LRClassifier {
 
     public void setTrainingData(String trainDataPath) {
         // var rr = SparkFiles.get(trainDataPath);
-        var foo = "s3://test-bucket-njit/TrainingDataset.csv";
+        var foo = "s3a://test-bucket-njit/TrainingDataset.csv";
         trainingDf = FileHandler.getDataFrame(spark, foo);
         trainingDf.persist(StorageLevel.MEMORY_AND_DISK());
     }
