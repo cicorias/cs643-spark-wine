@@ -51,14 +51,14 @@ public class LRClassifier {
     }
 
     public void setTrainingData(String trainDataPath) {
-        var rr = SparkFiles.get(trainDataPath);
-        trainingDf = FileHandler.getDataFrame(spark, rr);
+        // var rr = SparkFiles.get(trainDataPath);
+        trainingDf = FileHandler.getDataFrame(spark, trainDataPath);
         trainingDf.persist(StorageLevel.MEMORY_AND_DISK());
     }
 
     public void setValidationData(String validationDataPath) {
-        var rr = SparkFiles.get(validationDataPath);
-        validationDf = FileHandler.getDataFrame(spark, rr);
+        // var rr = SparkFiles.get(validationDataPath);
+        validationDf = FileHandler.getDataFrame(spark, validationDataPath);
         validationDf.persist(StorageLevel.MEMORY_AND_DISK());
     }
 
