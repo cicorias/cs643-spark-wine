@@ -10,3 +10,4 @@ bin/
 *.pem
 
 model/
+model/traindedModel/metadata/.part-00000.crc

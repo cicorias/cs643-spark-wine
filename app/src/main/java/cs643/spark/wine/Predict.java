@@ -36,8 +36,8 @@ public class Predict {
     public void Run() {
 
         CrossValidatorModel cvModel = CrossValidatorModel.load("./model/cvModel/");
-
-        Dataset<Row> testDf = FileHandler.getDataFrame(spark, testFile);
+        logger.info("Using file " + testFile);
+        Dataset<Row> testDf = FileHandler.getDataFrame(spark, "/data/test.csv");
 
         Dataset<Row> predictionDF = cvModel.transform(testDf);
 
@@ -53,7 +53,7 @@ public class Predict {
         String pattern = "yyyy-MM-dd-HH-mm-ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(new Date());
-        String fileName = "output-" + date + ".txt";
+        String fileName = "/data/output-" + date + ".txt";
 
         try (OutputStream os = new FileOutputStream(fileName)) {
             logger.info("output written to file {}", fileName);

@@ -88,8 +88,10 @@ public class App {
             }
 
         } else {
-            logger.info("Prediction not implemented yet");
-            var p = new Predict(master, null, testFile);
+            logger.info("Prediction runing with file " + testFile);
+            //String userDir = System.setProperty("user.dir", "/");
+            var p = new Predict("local[1]", null, testFile);
+
 
             p.Run();
             
