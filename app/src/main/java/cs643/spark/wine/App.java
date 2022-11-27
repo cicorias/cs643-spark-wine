@@ -3,28 +3,39 @@
  */
 package cs643.spark.wine;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class App {
     private static Logger logger = LoggerFactory.getLogger(App.class);
 
-
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
         
         var workingDir = System.getProperty("user.dir");
-        var model1 = new LRModel();
-        model1.setTrainingData("work/data/TrainingDataset.csv");
-        model1.setValidationData("work/data/ValidationDataset.csv");
+        logger.info("Working directory: {}", workingDir);
+        var model1 = new LRClassifier();
+        model1.setTrainingData("TrainingDataset.csv");
+        model1.setValidationData("ValidationDataset.csv");
+        ClassifierResult result1 = model1.evaluate();
 
 
-        model1.evaluate();
+        var model2 = new RFClassifier();
+        model2.setTrainingData("TrainingDataset.csv");
+        model2.setValidationData("ValidationDataset.csv");
+        ClassifierResult result2 = model2.evaluate();
 
+        System.out.println("Logistic Regression");
+        System.out.println(result1.toString());
+        System.out.println("Random Forest");
+        System.out.println(result2.toString());
 
+        try {
+            model1.pipeline.write().overwrite().save("./model/traindedModel");
+        } catch (IOException e) {
+            logger.error("Could NOT save the model to path ./models/", e);
+        }
 
     }
 }

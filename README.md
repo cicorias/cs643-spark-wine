@@ -22,3 +22,34 @@ https://github.com/piotrszul/spark-tutorial/tree/master/notebooks
 
 
 https://www.kaggle.com/code/fatmakursun/pyspark-ml-tutorial-for-beginners
+
+
+# Cloud Init
+
+```bash
+#!/bin/bash
+
+apt update && apt upgrade -y
+apt install -y default-jdk git gradle \
+    maven htop dnsdiag net-tools netcat \
+    curl wget
+
+
+cd /opt
+sudo curl -OL https://dlcdn.apache.org/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3-scala2.13.tgz
+sudo tar xzf spark-3.3.1-bin-hadoop3-scala2.13.tgz
+
+```
+
+
+```text
+#main
+ip-172-31-92-10.ec2.internal
+
+#workers
+ip-172-31-84-110.ec2.internal
+ip-172-31-82-101.ec2.internal
+ip-172-31-85-72.ec2.internal
+ip-172-31-85-145.ec2.internal
+
+```
