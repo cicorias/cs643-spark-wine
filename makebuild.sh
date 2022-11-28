@@ -1,1 +1,1 @@
-gradle clean build  -x test && docker build -t cicorias/predict:latest . 
+./gradlew clean build  -x test && docker build -t cicorias/predict:latest . 
