@@ -78,9 +78,9 @@ ip-172-31-85-145.ec2.internal
 ```
 
 ```
-spark.hadoop.fs.s3a.access.key ASIAVHYSVG6AHITBXIWM
-spark.hadoop.fs.s3a.secret.key jQ4QWj2bzAl3ffzj4IS1YTSp3j2YnpPaKFw+okOO
-aws_session_token=FwoGZXIvYXdzECoaDCISSGJmnD5ZYb4IfyK/AW8ac+vLX+wUZWDx3XpHm+QQZPUebAWFe7C+VIlLphH0hZhQ7iDtIDmKcnxl40Bb+H6QvzlcPTvQMwg83kDVFi37E/IZ/x+Hhu1iV2GxJJQ3KukQ2pC97UpedSVw70dLADX4PrKoDdQm067l3QpJ8gXWV5sRbFyH3LoflUomsMPYKjUSt6WRqulRlYvnjX5G7zVpjiGT/eU6Ct1rLBZ8FvIuPA3xgeYYkuTI27/iABadiVjeBcuB5AFFQ1/8dyO0KJWgjpwGMi2A1S798h/29WCWdpQk74NliprRn8QrvP75oQnfAlkDBAyMyDYg675YAtswVX0=
+spark.hadoop.fs.s3a.access.key 
+spark.hadoop.fs.s3a.secret.key +okOO
+
 spark.hadoop.fs.s3a.impl org.apache.hadoop.fs.s3a.S3AFileSystem
 
 
